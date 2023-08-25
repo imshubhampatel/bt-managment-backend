@@ -4,6 +4,44 @@ server:
 spring:
   application:
     name: AUTHENTICATION-SERVICE
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: bt-microservice
+
+# accessTokenSecret: THIS_IS_A_SECRET_WHICH_CANNOT_BE_REVELAED_AT_ANY_COST_1234567890_1234567890_1234567890_1234567890_1234567890
+# refreshTokenSecret: 54321
+# accessTokenExpirationMinutes: 55512
+# refreshTokenExpirationDays: 30
+# env: "QA"
+# emailEnv: "QA"
+# xApiKey: HQJisTB85h6OMZV9AYOFODPci0uA3KmT
+
+# @Value("${auth.service.url}")
+
+authentication:
+  service:
+    url: http://AUTHENTICATION-SERVICE/authentication-service
+
+events:
+  service:
+    url: http://EVENTS-SERVICE/events-service
+
+library:
+  service:
+    url: http://LIBRARY-SERVICE/library-service
+
+management:
+  service:
+    url: http://MANAGEMENT-SERVICE/management-service
+
+payments:
+  service:
+    url: http://PAYMENTS-SERVICE/payments-service
+students-connect:
+  service:
+    url: http://STUDENTS-CONNECT-SERVICE/students-connect-service
 
 eureka:
   instance:

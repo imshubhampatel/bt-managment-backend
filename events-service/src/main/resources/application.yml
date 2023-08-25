@@ -5,6 +5,30 @@ spring:
   application:
     name: EVENTS-SERVICE
 
+# URL's
+authentication:
+  service:
+    url: http://AUTHENTICATION-SERVICE/authentication-service
+
+events:
+  service:
+    url: http://EVENTS-SERVICE/events-service
+
+library:
+  service:
+    url: http://LIBRARY-SERVICE/library-service
+
+management:
+  service:
+    url: http://MANAGEMENT-SERVICE/management-service
+
+payments:
+  service:
+    url: http://PAYMENTS-SERVICE/payments-service
+students-connect:
+  service:
+    url: http://STUDENTS-CONNECT-SERVICE/students-connect-service
+
 eureka:
   instance:
     host: localhost

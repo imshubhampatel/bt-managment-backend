@@ -4,6 +4,38 @@ server:
 spring:
   application:
     name: API-GATEWAY-SERVICE
+  cloud:
+    gateway:
+      routes:
+        - id: "AUTHENTICATION-SERVICE"
+          uri: lb://AUTHENTICATION-SERVICE # URL for the "authentication service" route
+          predicates:
+            - Path=/authentication-service/**
+
+        - id: "EVENTS-SERVICE"
+          uri: lb://EVENTS-SERVICE # URL for the "Events service" route
+          predicates:
+            - Path=/events-service/**
+
+        - id: "LIBRARY-SERVICE"
+          uri: lb://LIBRARY-SERVICE # URL for the "Library service" route
+          predicates:
+            - Path=/library-service/**
+
+        - id: "MANAGEMENT-SERVICE"
+          uri: lb://MANAGEMENT-SERVICE # URL for the "Management service" route
+          predicates:
+            - Path=/management-service/**
+
+        - id: "PAYMENTS-SERVICE"
+          uri: lb://PAYMENTS-SERVICE # URL for the "Payments-service" route
+          predicates:
+            - Path=/payments-service/**
+
+        - id: "STUDENTS-CONNECT-SERVICE"
+          uri: lb://STUDENTS-CONNECT-SERVICE # URL for the "students-connect-service" route
+          predicates:
+            - Path=/students-connect-service/**
 
 eureka:
   instance:
