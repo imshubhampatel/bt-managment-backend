@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: EVENTS-SERVICE
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: bt-microservices
 
 # URL's
 authentication:

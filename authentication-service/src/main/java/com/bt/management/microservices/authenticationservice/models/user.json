@@ -1,0 +1,33 @@
+[
+  {
+    "id": "234",
+    "username": "imshubhampatel",
+    "password": "welcome@123",
+    "email": "shubhampatel2024@gmail.com",
+    "firstName": "shubham",
+    "lastName": "patel",
+    "Branch": "CS",
+    "qualification": "BACHELOR_OF_TECHNOLOGY",
+    "age": "22",
+    "dateOfJoining": "09/12/2021",
+    "dateOfBirth": "05/01/2003",
+    "enrollmentNumber": "0608CS211065",
+    "serialNumber": "65",
+    "about": "I'm a cloud-FSD ",
+    "college": "12344234234"
+  },
+
+  {
+    "name": "Babulal Tarabai Institute of Research and Technology",
+    "code": "0608",
+    "city": "SAGAR",
+    "state": "MADHYA_PRADESH",
+    "zipCode": "470002",
+    "address": "Sironja Sagar Madhya Pradesh m.p 470002",
+    "openingTime": "10:00AM",
+    "closingTime": "06:00PM",
+    "status": "open",
+    "contactNumber1": "9389112183",
+    "contactNumber2": "9548762721"
+  }
+]

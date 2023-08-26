@@ -8,7 +8,7 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: bt-microservice
+      database: bt-microservices
 
 # accessTokenSecret: THIS_IS_A_SECRET_WHICH_CANNOT_BE_REVELAED_AT_ANY_COST_1234567890_1234567890_1234567890_1234567890_1234567890
 # refreshTokenSecret: 54321
