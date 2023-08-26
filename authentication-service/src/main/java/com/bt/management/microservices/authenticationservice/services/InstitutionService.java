@@ -83,8 +83,6 @@ public class InstitutionService {
         contactNumber
       );
     }
-    System.out.println(instituteDB);
-    System.out.println(institution);
     institution.setId(instituteId);
     return institutionRepository.save(institution);
   }

@@ -40,6 +40,9 @@ public class User {
   private String email;
 
   @Field
+  private String phoneNumber;
+
+  @Field
   private String password;
 
   @Indexed(unique = true)
@@ -62,6 +65,9 @@ public class User {
 
   @Field
   private Date dateOfBirth;
+
+  @Field
+  private Date year;
 
   @Field
   private Date dateOfJoining;
