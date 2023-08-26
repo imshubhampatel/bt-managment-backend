@@ -1,13 +1,12 @@
 package com.bt.management.microservices.authenticationservice.services;
 
+import com.bt.management.microservices.authenticationservice.exceptions.ResourceAlreadyExistsException;
 import com.bt.management.microservices.authenticationservice.exceptions.ResourceNotFoundException;
 import com.bt.management.microservices.authenticationservice.models.Institution;
 import com.bt.management.microservices.authenticationservice.repositories.InstitutionRepository;
 import java.util.List;
 import java.util.Optional;
-import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,16 +20,20 @@ public class InstitutionService {
 
   public Institution registerInstitution(Institution institutionReq) {
     Institution institute = convertToInstitution(institutionReq);
+
     Optional<Institution> institutionDB = institutionRepository.findOneByEmail(
       institute.getEmail()
     );
+    System.out.println(institutionDB.isEmpty());
+    if (institutionDB.isEmpty() == false) {
+      throw new ResourceAlreadyExistsException(
+        "Institution",
+        "email",
+        institutionDB.get().getEmail()
+      );
+    }
 
     System.out.println("institutionDB" + institutionDB);
-
-    // if (institutionDB.isEmpty() == true) {
-    //   return helperService.generateResponse("Institution already registered", HttpStatus.SC_FORBIDDEN, institutionDB)
-    // }
-
     return institutionRepository.save(institute);
   }
 
@@ -38,13 +41,49 @@ public class InstitutionService {
     Institution institution,
     String instituteId
   ) {
-    Institution institute = institutionRepository
+    Institution instituteDB = institutionRepository
       .findById(instituteId)
       .orElseThrow(() ->
-        new ResourceNotFoundException("Institution", "id", instituteId)
+        new ResourceNotFoundException("Institution", "Id", instituteId)
       );
 
-    System.out.println(institute);
+    // System.out.println(institution.getEmail().equals(instituteDB.getEmail()));
+    Boolean isEmailExists = instituteDB
+      .getEmail()
+      .equals(institution.getEmail());
+    Boolean isCodeExists = instituteDB.getCode().equals(institution.getCode());
+
+    if (isEmailExists || isCodeExists) {
+      String fieldVal = isEmailExists
+        ? institution.getEmail().toString()
+        : institution.getCode().toString();
+      String name = isEmailExists ? "email" : "code";
+
+      throw new ResourceAlreadyExistsException("Institution", name, fieldVal);
+    }
+
+    if (
+      instituteDB.getContactNumber1().equals(institution.getContactNumber1()) ||
+      instituteDB.getContactNumber2().equals(institution.getContactNumber2())
+    ) {
+      String contactNumber;
+      Boolean contactNumber1 = institution
+        .getContactNumber1()
+        .equals(instituteDB.getContactNumber1());
+
+      contactNumber =
+        contactNumber1 == true
+          ? institution.getContactNumber1().toString()
+          : institution.getContactNumber2().toString();
+
+      throw new ResourceAlreadyExistsException(
+        "Institution",
+        "Contact No.",
+        contactNumber
+      );
+    }
+    System.out.println(instituteDB);
+    System.out.println(institution);
     institution.setId(instituteId);
     return institutionRepository.save(institution);
   }

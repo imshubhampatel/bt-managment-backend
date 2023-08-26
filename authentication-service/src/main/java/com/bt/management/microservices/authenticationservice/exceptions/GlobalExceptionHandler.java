@@ -13,7 +13,6 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(
     ResourceNotFoundException ex
   ) {
-    System.out.println("ex" + ex);
     String message = ex.getMessage();
     ApiResponse apiResponse = new ApiResponse(
       message,
@@ -24,6 +23,22 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<ApiResponse>(
       apiResponse,
       HttpStatusCode.valueOf(HttpStatus.SC_NOT_FOUND)
+    );
+  }
+
+  @ExceptionHandler(ResourceAlreadyExistsException.class)
+  public ResponseEntity<ApiResponse> resourceAlreadyExistsExceptionHandler(
+    ResourceAlreadyExistsException ex
+  ) {
+    String message = ex.getMessage();
+    ApiResponse apiResponse = new ApiResponse(
+      message,
+      false,
+      HttpStatus.SC_CONFLICT
+    );
+    return new ResponseEntity<ApiResponse>(
+      apiResponse,
+      HttpStatusCode.valueOf(HttpStatus.SC_CONFLICT)
     );
   }
 }

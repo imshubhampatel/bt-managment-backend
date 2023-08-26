@@ -18,15 +18,20 @@ public class Institution {
   @Id
   private String id;
 
-  @Field
+  @Indexed(unique = true)
   private String name;
 
   @Indexed(unique = true)
-  @Field
   private String email;
 
-  @Field
+  @Indexed(unique = true)
   private String code;
+
+  @Indexed(unique = true)
+  private String contactNumber1;
+
+  @Indexed(unique = true)
+  private String contactNumber2;
 
   @Field
   private String address;
@@ -45,12 +50,6 @@ public class Institution {
 
   @Field
   private String closingTime;
-
-  @Field
-  private String contactNumber1;
-
-  @Field
-  private String contactNumber2;
 
   @Field
   private StatusEnum status = StatusEnum.OPEN;

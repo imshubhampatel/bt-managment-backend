@@ -3,27 +3,27 @@ package com.bt.management.microservices.authenticationservice.exceptions;
 import lombok.Data;
 
 @Data
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourceAlreadyExistsException extends RuntimeException {
 
   String resourceName;
-  String filedName;
+  String fieldName;
   String fieldValue;
 
-  public ResourceNotFoundException(
+  public ResourceAlreadyExistsException(
     String resourceName,
     String fieldName,
     String fieldValue
   ) {
     super(
       String.format(
-        "%s is not registered with %s : %s",
+        "%s is already registered with %s : %s",
         resourceName,
         fieldName,
         fieldValue
       )
     );
-    this.fieldValue = fieldValue;
-    this.filedName = fieldName;
     this.resourceName = resourceName;
+    this.fieldName = fieldName;
+    this.fieldValue = fieldValue;
   }
 }

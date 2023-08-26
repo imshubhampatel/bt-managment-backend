@@ -14,12 +14,16 @@ public class HelperService {
     int status,
     Object data
   ) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("message", message);
-    map.put("status", status);
+    Map<String, Object> apiResponse = new HashMap<String, Object>();
+    apiResponse.put("message", message);
+    apiResponse.put("status", status);
+    apiResponse.put("success", true);
     if (data != null) {
-      map.put("data", data);
+      apiResponse.put("data", data);
     }
-    return new ResponseEntity<Object>(map, HttpStatusCode.valueOf(status));
+    return new ResponseEntity<Object>(
+      apiResponse,
+      HttpStatusCode.valueOf(status)
+    );
   }
 }
