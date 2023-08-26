@@ -6,6 +6,7 @@ import com.bt.management.microservices.authenticationservice.models.Institution;
 import com.bt.management.microservices.authenticationservice.repositories.InstitutionRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,8 +89,16 @@ public class InstitutionService {
     return institutionRepository.save(institution);
   }
 
-  public void deleteInstitutes(String institutionId) {
+  public Optional<Institution> deleteInstitutes(String institutionId) {
+    Optional<Institution> institution = institutionRepository.findById(
+      institutionId
+    );
+
+    if (institution.isEmpty()) {
+      throw new ResourceNotFoundException("Institution", "Id", institutionId);
+    }
     institutionRepository.deleteById(institutionId);
+    return institution;
   }
 
   public List<Institution> getAllInstitutions() {

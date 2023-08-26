@@ -4,6 +4,7 @@ import com.bt.management.microservices.authenticationservice.models.Institution;
 import com.bt.management.microservices.authenticationservice.services.HelperService;
 import com.bt.management.microservices.authenticationservice.services.InstitutionService;
 import java.util.List;
+import java.util.Optional;
 import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +52,16 @@ public class UserController {
   }
 
   @DeleteMapping("/delete-institution/{instituteId}")
-  public void deleteInstitutes(@PathVariable String instituteId) {
-    System.out.println("collegeRequest" + instituteId);
-    institutionService.deleteInstitutes(instituteId);
+  public ResponseEntity<Object> deleteInstitutes(
+    @PathVariable String instituteId
+  ) {
+    Optional<Institution> institution = institutionService.deleteInstitutes(
+      instituteId
+    );
+    return helperService.generateResponse(
+      "Institution is Deleted Successfully",
+      HttpStatus.SC_ACCEPTED,
+      institution
+    );
   }
 }
