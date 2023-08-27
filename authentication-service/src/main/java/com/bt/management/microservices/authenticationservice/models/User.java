@@ -1,31 +1,42 @@
 package com.bt.management.microservices.authenticationservice.models;
 
+import com.bt.management.microservices.authenticationservice.dto.Base;
 import com.bt.management.microservices.authenticationservice.dto.BranchEnum;
-import com.bt.management.microservices.authenticationservice.dto.QualificationEnum;
+import com.bt.management.microservices.authenticationservice.dto.CoursesEnum;
+import com.bt.management.microservices.authenticationservice.dto.GenderEnum;
+import com.bt.management.microservices.authenticationservice.dto.SemesterEnum;
+import com.bt.management.microservices.authenticationservice.dto.UserRoleEnum;
+import com.bt.management.microservices.authenticationservice.dto.YearEnum;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 // import org.springframework.security.core.GrantedAuthority;
 // import org.springframework.security.core.userdetails.UserDetails;
 
-@Document(collection = "users")
+@Document(collection = "Users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 // public class User implements UserDetails {
-public class User {
+public class User extends Base implements UserDetails {
 
   @Id
   private String id;
@@ -37,22 +48,31 @@ public class User {
   private String lastName;
 
   @Field
+  private String dateOfBirth;
+
+  @Field
+  private Integer age;
+
+  @Field
+  private String dateOfJoining;
+
+  // @Indexed(unique = true)
+  @Field
   private String email;
 
+  // @Indexed(unique = true)
   @Field
   private String phoneNumber;
 
+  // @Indexed(unique = true)
   @Field
-  private String password;
+  private String enrollmentNumber;
 
-  @Indexed(unique = true)
+  // @Indexed(unique = true)
   private String username;
 
   @Field
-  private String age;
-
-  @Field
-  private String enrollmentNumber;
+  private String password;
 
   @Field
   private String serialNumber;
@@ -61,45 +81,52 @@ public class User {
   private BranchEnum branch = BranchEnum.NOT_SELECTED;
 
   @Field
-  private QualificationEnum qualification = QualificationEnum.NOT_SELECTED;
+  private CoursesEnum course = CoursesEnum.NOT_SELECTED;
 
   @Field
-  private Date dateOfBirth;
+  private SemesterEnum semester = SemesterEnum.NOT_SELECTED;
 
   @Field
-  private Date year;
+  private YearEnum year = YearEnum.NOT_SELECTED;
 
   @Field
-  private Date dateOfJoining;
+  private UserRoleEnum role = UserRoleEnum.NOT_SELECTED;
 
   @Field
   private String about;
 
-  @DocumentReference
   @Field
+  private String address;
+
+  @Field
+  private GenderEnum gender = GenderEnum.NOT_SELECTED;
+
+  @DocumentReference
+  @Indexed
   private Institution institution;
-  // @Override
-  // public Collection<? extends GrantedAuthority> getAuthorities() {
-  //   return Collections.EMPTY_LIST;
-  // }
 
-  // @Override
-  // public boolean isAccountNonExpired() {
-  //   return true;
-  // }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return Collections.EMPTY_LIST;
+  }
 
-  // @Override
-  // public boolean isAccountNonLocked() {
-  //   return true;
-  // }
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-  // @Override
-  // public boolean isCredentialsNonExpired() {
-  //   return true;
-  // }
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-  // @Override
-  // public boolean isEnabled() {
-  //   return true;
-  // }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }

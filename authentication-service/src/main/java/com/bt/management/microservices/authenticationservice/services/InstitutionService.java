@@ -6,7 +6,6 @@ import com.bt.management.microservices.authenticationservice.models.Institution;
 import com.bt.management.microservices.authenticationservice.repositories.InstitutionRepository;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
