@@ -16,10 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -56,19 +53,19 @@ public class User extends Base implements UserDetails {
   @Field
   private String dateOfJoining;
 
-  // @Indexed(unique = true)
+  @Indexed(unique = true)
   @Field
   private String email;
 
-  // @Indexed(unique = true)
+  @Indexed(unique = true)
   @Field
   private String phoneNumber;
 
-  // @Indexed(unique = true)
+  @Indexed(unique = true)
   @Field
   private String enrollmentNumber;
 
-  // @Indexed(unique = true)
+  @Indexed(unique = true)
   private String username;
 
   @Field
@@ -104,6 +101,11 @@ public class User extends Base implements UserDetails {
   @DocumentReference
   @Indexed
   private Institution institution;
+
+  @Override
+  public String getUsername() {
+    return this.id;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
