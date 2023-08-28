@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,21 +95,18 @@ public class UserService {
     User user = userRepository
       .findByEmail(userRequest.getEmail())
       .orElseThrow(() ->
-        new UsernameNotFoundException(
-          "User not found with email : " + userRequest.getEmail()
-        )
+        new BadCredentialsException("Email and Password are incorrect!")
       );
     if (
       passwordEncoder.matches(userRequest.getPassword(), user.getPassword())
     ) {
       var jwtToken = jwtHelper.generateToken(user);
-
       Map<String, Object> authMap = new HashMap<String, Object>();
       authMap.put("token", jwtToken);
       authMap.put("user", user);
       return authMap;
     } else {
-      throw new RuntimeException("Invalid Password");
+      throw new BadCredentialsException("Email and Password are Incorrect!");
     }
   }
 }

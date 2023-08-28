@@ -1,15 +1,19 @@
 package com.bt.management.microservices.authenticationservice.config;
 
+import com.bt.management.microservices.authenticationservice.exceptions.ExpiredJwtTokenException;
 import com.bt.management.microservices.authenticationservice.helpers.JwtHelper;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import javax.security.auth.login.CredentialExpiredException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,30 +49,44 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     jwtToken = authHeader.substring(7);
+
     logger.info(" Header :  {}", authHeader);
-    userId = jwtHelper.getUsernameFromToken(jwtToken);
 
-    if (
-      userId != null &&
-      SecurityContextHolder.getContext().getAuthentication() == null
-    ) {
-      UserDetails userDetails =
-        this.userDetailsService.loadUserByUsername(userId);
-      if (jwtHelper.validateToken(jwtToken, userDetails)) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-          userId,
-          null,
-          userDetails.getAuthorities()
-        );
+    try {
+      userId = jwtHelper.getUsernameFromToken(jwtToken);
+      if (
+        userId != null &&
+        SecurityContextHolder.getContext().getAuthentication() == null
+      ) {
+        UserDetails userDetails =
+          this.userDetailsService.loadUserByUsername(userId);
+        System.out.println("userDetails : ------------" + userDetails);
 
-        authToken.setDetails(
-          new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+        if (jwtHelper.validateToken(jwtToken, userDetails)) {
+          UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            userId,
+            null,
+            userDetails.getAuthorities()
+          );
 
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+          authToken.setDetails(
+            new WebAuthenticationDetailsSource().buildDetails(request)
+          );
+
+          SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
       }
+    } catch (ExpiredJwtException e) {
+      response.sendError(403, "token is Expired");
+      return;
+      // System.out.println(e);
+      // request.setAttribute("expired", e.getMessage());
+      // throw new ExpiredJwtTokenException(
+      //   e.getHeader(),
+      //   e.getClaims(),
+      //   "Expired JWT token"
+      // );
     }
-
     filterChain.doFilter(request, response);
   }
 }

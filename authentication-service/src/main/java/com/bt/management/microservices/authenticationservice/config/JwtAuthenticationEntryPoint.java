@@ -19,7 +19,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     AuthenticationException authException
   ) throws IOException, ServletException {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    System.out.println(authException);
     PrintWriter writer = response.getWriter();
-    writer.println("Access Denied !!" + authException.getMessage());
+
+    writer.println("YouToken Expired " + authException.getMessage());
   }
 }

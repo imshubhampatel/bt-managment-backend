@@ -1,7 +1,9 @@
 package com.bt.management.microservices.authenticationservice.helpers;
 
+import com.bt.management.microservices.authenticationservice.exceptions.ExpiredJwtTokenException;
 import com.bt.management.microservices.authenticationservice.services.HelperService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -89,9 +91,7 @@ public class JwtHelper {
       .setClaims(claims)
       .setSubject(subject)
       .setIssuedAt(new Date(System.currentTimeMillis()))
-      .setExpiration(
-        new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)
-      )
+      .setExpiration(new Date(System.currentTimeMillis() + 5 * 1000))
       .signWith(getSignInKey(), SignatureAlgorithm.HS256)
       .compact();
   }
