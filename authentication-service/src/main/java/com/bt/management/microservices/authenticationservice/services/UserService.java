@@ -1,5 +1,6 @@
 package com.bt.management.microservices.authenticationservice.services;
 
+import com.bt.management.microservices.authenticationservice.dto.Authentication.UserLoginRequest;
 import com.bt.management.microservices.authenticationservice.dto.AuthenticationResponse;
 import com.bt.management.microservices.authenticationservice.dto.UserDto;
 import com.bt.management.microservices.authenticationservice.exceptions.ResourceNotFoundException;
@@ -8,8 +9,11 @@ import com.bt.management.microservices.authenticationservice.models.Institution;
 import com.bt.management.microservices.authenticationservice.models.User;
 import com.bt.management.microservices.authenticationservice.repositories.InstitutionRepository;
 import com.bt.management.microservices.authenticationservice.repositories.UserRepository;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +33,9 @@ public class UserService {
 
   @Autowired
   JwtHelper jwtHelper;
+
+  @Autowired
+  HelperService helperService;
 
   public AuthenticationResponse registerUser(UserDto userReq) {
     User user = convertToUser(userReq);
@@ -81,5 +88,27 @@ public class UserService {
     }
 
     return user;
+  }
+
+  public Map<String, Object> authenticateUser(UserLoginRequest userRequest) {
+    User user = userRepository
+      .findByEmail(userRequest.getEmail())
+      .orElseThrow(() ->
+        new UsernameNotFoundException(
+          "User not found with email : " + userRequest.getEmail()
+        )
+      );
+    if (
+      passwordEncoder.matches(userRequest.getPassword(), user.getPassword())
+    ) {
+      var jwtToken = jwtHelper.generateToken(user);
+
+      Map<String, Object> authMap = new HashMap<String, Object>();
+      authMap.put("token", jwtToken);
+      authMap.put("user", user);
+      return authMap;
+    } else {
+      throw new RuntimeException("Invalid Password");
+    }
   }
 }
