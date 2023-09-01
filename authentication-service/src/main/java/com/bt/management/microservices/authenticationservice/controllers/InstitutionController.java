@@ -5,8 +5,8 @@ import com.bt.management.microservices.authenticationservice.services.HelperServ
 import com.bt.management.microservices.authenticationservice.services.InstitutionService;
 import java.util.List;
 import java.util.Optional;
-import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +32,7 @@ public class InstitutionController {
     List<Institution> allInstitutions = institutionService.getAllInstitutions();
     return helperService.generateResponse(
       "Fetched data successfully",
-      HttpStatus.SC_OK,
+      HttpStatus.OK,
       allInstitutions
     );
   }
@@ -60,7 +60,7 @@ public class InstitutionController {
     );
     return helperService.generateResponse(
       "Institution is Deleted Successfully",
-      HttpStatus.SC_ACCEPTED,
+      HttpStatus.ACCEPTED,
       institution
     );
   }
